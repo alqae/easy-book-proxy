@@ -18,6 +18,7 @@ jobs:
             ls -a  # Verifica los archivos del directorio actual
             whoami  # Verifica el usuario que está ejecutando el workflow
             id  # Verifica los grupos a los que pertenece el usuario, incluyendo docker
+            cat $(pwd)/docker-compose.yml # Verifica el contenido del archivo
       - run:
           name: Run Docker Compose Down
           command: |

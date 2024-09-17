@@ -12,20 +12,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Show User Information
+          name: Run Docker Compose Down
           command: |
-            pwd  # Verifica el directorio actual
-            ls -a  # Verifica los archivos del directorio actual
-            whoami  # Verifica el usuario que está ejecutando el workflow
-            id  # Verifica los grupos a los que pertenece el usuario, incluyendo docker
+            echo "Running docker compose down"
+            docker compose -f $(pwd)/docker-compose.yml down
       - run:
-          name: Stop containers
+          name: Run Docker Compose Up
           command: |
-            ls -a  # Verifica los archivos del directorio actual
-            docker compose -f ./docker-compose.yml down
+            echo "Running docker compose up"
+            docker compose -f $(pwd)/docker-compose.yml up -d
       - run:
-          name: Start containers
-          command: docker compose up -d
-      - run:
-          name: Verify containers
-          command: docker compose ps
+          name: Verify Docker Containers
+          command: |
+            echo "Listing Docker Containers"
+            docker ps

@@ -20,7 +20,9 @@ jobs:
             id  # Verifica los grupos a los que pertenece el usuario, incluyendo docker
       - run:
           name: Stop containers
-          command: docker compose down
+          command: |
+            ls -a  # Verifica los archivos del directorio actual
+            docker compose down
       - run:
           name: Start containers
           command: docker compose up -d

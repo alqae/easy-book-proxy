@@ -40,7 +40,7 @@ jobs:
       - run:
           name: Clean Up Temporary Directory and Docker Compose Cache
           command: |
-            rm -rf /tmp/docker-compose
+            # rm -rf /tmp/docker-compose
             docker-compose down --rmi all --volumes --remove-orphans
             echo "Temporary directory and Docker Compose cache cleaned"
 

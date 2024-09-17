@@ -22,7 +22,7 @@ jobs:
           name: Stop containers
           command: |
             ls -a  # Verifica los archivos del directorio actual
-            docker compose down
+            docker compose -f ./docker-compose.yml down
       - run:
           name: Start containers
           command: docker compose up -d

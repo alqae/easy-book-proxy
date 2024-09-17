@@ -12,6 +12,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Show User Information
+          command: |
+            pwd  # Verifica el directorio actual
+            ls -a  # Verifica los archivos del directorio actual
+            whoami  # Verifica el usuario que está ejecutando el workflow
+            id  # Verifica los grupos a los que pertenece el usuario, incluyendo docker
+      - run:
           name: Run Docker Compose Down
           command: |
             echo "Running docker compose down"

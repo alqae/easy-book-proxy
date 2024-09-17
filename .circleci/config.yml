@@ -1,11 +1,5 @@
 version: 2.1
 
-workflows:
-  build-workflow:
-    jobs:
-      - runner
-      - cleanup
-
 jobs:
   runner:
     resource_class: alqae/linode
@@ -13,32 +7,26 @@ jobs:
     steps:
       - checkout
       - run:
+          name: List Files After Checkout
+          command: |
+            echo "Files in working directory:"
+            ls -la
+      - run:
           name: Create Temporary Directory and Copy Files
           command: |
             mkdir -p /tmp/docker-compose
             cp -r $(pwd)/* /tmp/docker-compose/
             echo "Files copied to /tmp/docker-compose"
-
-      - run:
-          name: List Files in Temporary Directory
-          command: |
-            echo "Current Directory:"
-            pwd
-            echo "Files in Temporary Directory:"
-            ls -l /tmp/docker-compose
-
       - run:
           name: Run Docker Compose Down
           command: |
             echo "Running docker compose down"
-            docker compose -f /tmp/docker-compose/docker-compose.yml down
-
+            docker-compose -f /tmp/docker-compose/docker-compose.yml down
       - run:
           name: Run Docker Compose Up
           command: |
             echo "Running docker compose up"
-            docker compose -f /tmp/docker-compose/docker-compose.yml up -d
-
+            docker-compose -f /tmp/docker-compose/docker-compose.yml up -d
       - run:
           name: Verify Docker Containers
           command: |
@@ -53,5 +41,12 @@ jobs:
           name: Clean Up Temporary Directory and Docker Compose Cache
           command: |
             rm -rf /tmp/docker-compose
-            docker compose down --rmi all --volumes --remove-orphans
+            docker-compose down --rmi all --volumes --remove-orphans
             echo "Temporary directory and Docker Compose cache cleaned"
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - runner
+      - cleanup

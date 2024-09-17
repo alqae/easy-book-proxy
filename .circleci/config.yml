@@ -9,3 +9,4 @@ jobs:
     resource_class: alqae/linode
     steps:
       - run: echo $(pwd)
+      - run: echo $(ls -a)

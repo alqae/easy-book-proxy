@@ -1,14 +1,22 @@
 version: 2.1
-workflows:
-  build-workflow:
-    jobs:
-      - runner
+
 jobs:
   runner:
-    machine: true
     resource_class: alqae/linode
+    machine: true
+    docker:
+      - image: circleci/python:3.8  # Cambia la imagen si es necesario
     steps:
-      - run: echo $(pwd)
-      - run: echo $(ls -a)
-      - run: echo $(who am i)
-      # - run: docker ps -a
+      - checkout
+      - run:
+          name: Show User Information
+          command: |
+            pwd  # Verifica el directorio actual
+            ls -a  # Verifica los archivos del directorio actual
+            whoami  # Verifica el usuario que está ejecutando el workflow
+            id  # Verifica los grupos a los que pertenece el usuario, incluyendo docker
+      - run:
+          name: Verify Docker Permissions
+          command: |
+            docker --version  # Verifica que el comando docker esté disponible
+            docker ps  # Verifica que el usuario tenga permisos para ejecutar comandos docker

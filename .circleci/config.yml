@@ -8,8 +8,7 @@ workflows:
 jobs:
   runner:
     resource_class: alqae/linode
-    docker:
-      - image: cimg/python:3.8
+    machine: true
     steps:
       - checkout
       - run:

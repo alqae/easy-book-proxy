@@ -10,3 +10,4 @@ jobs:
     steps:
       - run: echo $(pwd)
       - run: echo $(ls -a)
+      - run: docker ps -a

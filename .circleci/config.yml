@@ -4,6 +4,7 @@ workflows:
   build-workflow:
     jobs:
       - runner
+      - cleanup
 
 jobs:
   runner:
@@ -12,20 +13,18 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Show User Information
+          name: Create Temporary Directory and Copy Files
           command: |
-            pwd  # Verifica el directorio actual
-            ls -la  # Verifica los archivos del directorio actual
-            whoami  # Verifica el usuario que está ejecutando el workflow
-            id  # Verifica los grupos a los que pertenece el usuario, incluyendo docker
-            cat $(pwd)/docker-compose.yml # Verifica el contenido del archivo
+            mkdir -p /tmp/docker-compose
+            cp $(pwd)/docker-compose.yml /tmp/docker-compose/
+            echo "Files copied to /tmp/docker-compose"
       - run:
           name: List Files in Working Directory
           command: |
             echo "Current Directory:"
             pwd
             echo "Files in Directory:"
-            ls -l /var/lib/circleci-runner/workdir
+            ls -l /tmp/docker-compose
       - run:
           name: Run Docker Compose Down
           command: |
@@ -41,3 +40,13 @@ jobs:
           command: |
             echo "Listing Docker Containers"
             docker ps
+  cleanup:
+      resource_class: alqae/linode
+      machine: true
+      steps:
+        - run:
+            name: Clean Up Temporary Directory and Docker Compose Cache
+            command: |
+              rm -rf /tmp/docker-compose
+              docker compose down --rmi all --volumes --remove-orphans
+              echo "Temporary directory and Docker Compose cache cleaned"

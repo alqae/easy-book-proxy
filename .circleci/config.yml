@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: cimg/base:current
-    resource_class: alqae/akamai
+    resource_class: alqae/linode
     steps:
       - run: echo "Hi I'm on a Container Runner!"
 workflows:

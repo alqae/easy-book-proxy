@@ -12,14 +12,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Show User Information
-          command: |
-            pwd  # Verifica el directorio actual
-            ls -a  # Verifica los archivos del directorio actual
-            whoami  # Verifica el usuario que está ejecutando el workflow
-            id  # Verifica los grupos a los que pertenece el usuario, incluyendo docker
+          name: Stop containers
+          command: docker compose down
       - run:
-          name: Verify Docker Permissions
-          command: |
-            docker --version
-            docker ps
+          name: Start containers
+          command: docker compose up -d
+      - run:
+          name: Verify containers
+          command: docker compose ps
